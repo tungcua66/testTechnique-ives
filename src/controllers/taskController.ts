@@ -8,7 +8,7 @@ import {
 } from "../services/taskService";
 
 const getUserId = (req: Request): string => {
-  return (req as any).userId || "demo-user";
+  return (req as any).userId;
 };
 
 export function getTasks(req: Request, res: Response) {
