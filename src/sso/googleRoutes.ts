@@ -12,20 +12,31 @@ router.get(
 
 router.get(
   "/google/callback",
-  passport.authenticate("google", { failureRedirect: "/auth/google/failure" }),
+  passport.authenticate("google", {
+    failureRedirect: "/auth/google/failure",
+    session: false,
+  }),
   (req, res) => {
     const user = req.user as any;
-    const userId = user.userId;
 
-    // generate OAuth2 auth code
+    if (!user || !user.userId) {
+      return res.status(500).json({ error: "missing_google_user" });
+    }
+
+    (req as any).user = { userId: user.userId };
+
     const code = createAuthorizationCode(
       "task-client",
       "http://localhost:3000/client/callback",
-      userId
+      user.userId
     );
 
-    res.redirect(`/client/callback?code=${code.code}`);
+    return res.redirect(`/client/callback?code=${code.code}`);
   }
 );
+
+router.get("/google/failure", (_req, res) => {
+  res.status(401).json({ error: "google_auth_failed" });
+});
 
 export default router;
