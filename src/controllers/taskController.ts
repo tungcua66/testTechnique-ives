@@ -5,7 +5,7 @@ import {
   createNewTask,
   updateTask,
   deleteTask,
-} from "../services/taskService.js";
+} from "../services/taskService";
 
 const getUserId = (req: Request): string => {
   return (req as any).userId || "demo-user";
