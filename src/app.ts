@@ -4,6 +4,7 @@ import oauthRoutes from "./routes/oauthRoutes";
 import clientRoutes from "./routes/clientRoutes";
 import { requireAuth } from "./middleware/authMiddleware";
 import googleRoutes from "./sso/googleRoutes";
+import ldapRoutes from "./sso/ldapRoutes";
 import passport from "passport";
 
 const app = express();
@@ -23,6 +24,7 @@ app.use("/tasks", requireAuth, taskRoutes);
 // Google stategy and passport
 app.use(passport.initialize());
 app.use("/auth", googleRoutes);
+app.use("/auth", ldapRoutes);
 
 app.get("/health", (req, res) => {
   res.json({ status: "ok" });
