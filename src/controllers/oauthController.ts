@@ -6,8 +6,12 @@ import {
   exchangeRefreshToken,
 } from "../services/oauthService";
 
-const getAuthenticatedUserId = (_req: Request): string => {
-  return "demo-user";
+const getAuthenticatedUserId = (req: Request): string => {
+  const user = (req as any).user;
+  if (!user || !user.userId) {
+    throw new Error("user_not_authenticated");
+  }
+  return user.userId;
 };
 
 // GET /oauth/authorize
