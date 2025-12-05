@@ -1,4 +1,3 @@
-// src/services/oauthService.ts
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import {
@@ -154,13 +153,11 @@ export function exchangeRefreshToken(
     throw new Error("expired_refresh_token");
   }
 
-  // Optional: rotate refresh tokens -> remove old, issue new one
   refreshTokens.splice(recordIndex, 1);
 
   return generateTokens(clientId, record.userId);
 }
 
-// Helper to verify access tokens in resource server later
 export function verifyAccessToken(token: string): { userId: string } {
   try {
     const decoded = jwt.verify(token, JWT_SECRET) as jwt.JwtPayload;
